@@ -4,7 +4,7 @@ from telegram import InlineKeyboardMarkup
 
 def home_keyboard():
 
-    return InlineKeyboardMarkup([
+    keyboard = [
 
         [
             InlineKeyboardButton(
@@ -37,8 +37,8 @@ def home_keyboard():
             ),
 
             InlineKeyboardButton(
-                "📊 Transactions",
-                callback_data="transactions"
+                "📊 History",
+                callback_data="history"
             )
         ],
 
@@ -54,4 +54,6 @@ def home_keyboard():
             )
         ]
 
-    ])
+    ]
+
+    return InlineKeyboardMarkup(keyboard)
