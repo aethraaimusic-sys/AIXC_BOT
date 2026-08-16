@@ -1,39 +1,53 @@
 from telegram import Update
 from telegram.ext import (
     Application,
+    CallbackQueryHandler,
     CommandHandler,
-    ContextTypes
+    ContextTypes,
 )
 
 from keyboards import home_keyboard
 from screens import home_screen
 
-TOKEN = "8647168718:AAFCJLnBRNaFpgQjamAOt1bmGH8UuXwR2ys"
+TOKEN = "YOUR_BOT_TOKEN"
 
 
-async def start(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(
-
-        home_screen(
-            update.effective_user.first_name
-        ),
-
-        reply_markup=home_keyboard()
-
+        home_screen(update.effective_user.first_name),
+        reply_markup=home_keyboard(),
     )
 
 
-app = Application.builder().token(TOKEN).build()
+async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-app.add_handler(
-    CommandHandler(
-        "start",
-        start
+    query = update.callback_query
+
+    await query.answer()
+
+    await query.edit_message_text(
+        text=f"You selected: {query.data}",
+        reply_markup=home_keyboard(),
     )
-)
 
-app.run_polling()
+
+def main():
+
+    app = Application.builder().token(TOKEN).build()
+
+    app.add_handler(
+        CommandHandler("start", start)
+    )
+
+    app.add_handler(
+        CallbackQueryHandler(buttons)
+    )
+
+    print("AIXC Bot is running...")
+
+    app.run_polling()
+
+
+if __name__ == "__main__":
+    main()
