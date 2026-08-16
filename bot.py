@@ -9,7 +9,7 @@ from telegram.ext import (
 from keyboards import home_keyboard
 from screens import home_screen
 
-TOKEN = "YOUR_BOT_TOKEN"
+TOKEN = "8647168718:AAFCJLnBRNaFpgQjamAOt1bmGH8UuXwR2ys"
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
