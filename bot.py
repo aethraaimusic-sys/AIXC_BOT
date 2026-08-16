@@ -7,7 +7,7 @@ from telegram.ext import CallbackQueryHandler
 from telegram.ext import CommandHandler
 from telegram.ext import ContextTypes
 
-TOKEN = os.getenv("8647168718:AAEf5mJDuVF0a1t2ceON5-Cmc3mmv-XGSww")
+TOKEN = os.getenv("8647168718:AAFCJLnBRNaFpgQjamAOt1bmGH8UuXwR2ys")
 
 
 def main_menu():
