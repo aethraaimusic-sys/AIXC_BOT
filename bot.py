@@ -1,43 +1,60 @@
-import os
 from telegram import InlineKeyboardButton
 from telegram import InlineKeyboardMarkup
 from telegram import Update
-from telegram.ext import Application
-from telegram.ext import CallbackQueryHandler
-from telegram.ext import CommandHandler
-from telegram.ext import ContextTypes
+from telegram.ext import (
+    Application,
+    CallbackQueryHandler,
+    CommandHandler,
+    ContextTypes,
+)
 
-TOKEN = os.getenv("8647168718:AAFCJLnBRNaFpgQjamAOt1bmGH8UuXwR2ys")
+# Replace this with your actual bot token
+TOKEN = "8647168718:AAFCJLnBRNaFpgQjamAOt1bmGH8UuXwR2ys"
 
 
 def main_menu():
 
     keyboard = [
-
         [
             InlineKeyboardButton(
                 "💰 Investment",
-                callback_data="investment"
+                callback_data="investment",
             ),
-
             InlineKeyboardButton(
                 "📚 Courses",
-                callback_data="courses"
-            )
+                callback_data="courses",
+            ),
         ],
-
         [
             InlineKeyboardButton(
                 "💳 Deposit",
-                callback_data="deposit"
+                callback_data="deposit",
             ),
-
             InlineKeyboardButton(
                 "💸 Withdraw",
-                callback_data="withdraw"
-            )
-        ]
-
+                callback_data="withdraw",
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                "👥 Referrals",
+                callback_data="referrals",
+            ),
+            InlineKeyboardButton(
+                "📊 Transactions",
+                callback_data="transactions",
+            ),
+        ],
+        [
+            InlineKeyboardButton(
+                "👤 Profile",
+                callback_data="profile",
+            ),
+            InlineKeyboardButton(
+                "📞 Support",
+                callback_data="support",
+            ),
+        ],
     ]
 
     return InlineKeyboardMarkup(keyboard)
@@ -46,12 +63,15 @@ def main_menu():
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(
-        "🤖 AIXC Bot is online.",
-        reply_markup=main_menu()
+        "🤖 Welcome to Austin Investment X Course (AIXC)\n\nChoose an option below.",
+        reply_markup=main_menu(),
     )
 
 
-async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def button_handler(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+):
 
     query = update.callback_query
 
@@ -59,15 +79,26 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await query.edit_message_text(
         f"You selected: {query.data}",
-        reply_markup=main_menu()
+        reply_markup=main_menu(),
     )
 
 
-app = Application.builder().token(TOKEN).build()
+def main():
 
-app.add_handler(CommandHandler("start", start))
+    app = Application.builder().token(TOKEN).build()
 
-app.add_handler(CallbackQueryHandler(buttons))
+    app.add_handler(
+        CommandHandler("start", start)
+    )
+
+    app.add_handler(
+        CallbackQueryHandler(button_handler)
+    )
+
+    print("Bot is running...")
+
+    app.run_polling()
+
 
 if __name__ == "__main__":
-    app.run_polling()
+    main()
